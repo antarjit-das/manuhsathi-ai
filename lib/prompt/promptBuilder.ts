@@ -26,16 +26,16 @@ export function buildPrompt({
       (scheme) => `
 Scheme: ${scheme.name}
 Category: ${scheme.category}
-Applicable States: ${scheme.states_applicable.join(", ")}
+Applicable States: ${scheme.states_applicable}
 
 Eligibility:
 ${scheme.eligibility_summary}
 
 Required Documents:
-${scheme.required_documents.join(", ")}
+${scheme.required_documents}
 
 Application Steps:
-${scheme.application_steps.join("\n")}
+${scheme.application_steps}
 
 Estimated Timeline:
 ${scheme.estimated_timeline}
