@@ -10,6 +10,7 @@
     "seed:schemes": "node --env-file=.env.local --import=tsx scripts/seed-schemes.ts"
   },
   "dependencies": {
+    "@google/genai": "^2.16.0",
     "@supabase/supabase-js": "^2.112.2",
     "next": "16.3.0",
     "react": "19.2.8",
