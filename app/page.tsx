@@ -1,6 +1,11 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 type StructuredResponse = {
   eligibility: string;
@@ -20,6 +25,18 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [language, setLanguage] = useState<
+  "en-IN" | "as-IN" | "brx-IN"
+>("en-IN");
+
+  const [recording, setRecording] = useState(false);
+  const [transcribing, setTranscribing] = useState(false);
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
+
 
   useEffect(() => {
     async function createSession() {
@@ -61,6 +78,108 @@ export default function Home() {
     console.error("New chat error:", error);
   }
 }
+async function transcribeRecording(blob: Blob) {
+  setTranscribing(true);
+
+  try {
+    const formData = new FormData();
+
+    const file = new File(
+      [blob],
+      "recording.webm",
+      {
+        type: "audio/webm",
+      },
+    );
+
+    formData.append("audio", file);
+    formData.append("language", language);
+
+    const response = await fetch("/api/speech/stt", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Speech recognition failed",
+      );
+    }
+
+    if (!data.transcript?.trim()) {
+      throw new Error("No speech detected");
+    }
+
+    setInput(data.transcript);
+  } catch (error) {
+    console.error("Speech-to-text error:", error);
+
+    alert(
+      error instanceof Error
+        ? error.message
+        : "Could not transcribe the recording.",
+    );
+  } finally {
+    setTranscribing(false);
+  }
+}
+
+async function toggleRecording() {
+  if (recording) {
+    mediaRecorderRef.current?.stop();
+    setRecording(false);
+    return;
+  }
+
+  try {
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+
+    mediaStreamRef.current = stream;
+    audioChunksRef.current = [];
+
+    const recorder = new MediaRecorder(stream);
+
+    mediaRecorderRef.current = recorder;
+
+    recorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        audioChunksRef.current.push(event.data);
+      }
+    };
+
+    recorder.onstop = async () => {
+      const blob = new Blob(
+        audioChunksRef.current,
+        {
+          type: recorder.mimeType || "audio/webm",
+        },
+      );
+
+      stream.getTracks().forEach((track) =>
+        track.stop(),
+      );
+
+      mediaStreamRef.current = null;
+
+      await transcribeRecording(blob);
+    };
+
+    recorder.start();
+    setRecording(true);
+  } catch (error) {
+    console.error("Microphone error:", error);
+
+    alert(
+      "Could not access the microphone. Please check your browser permission.",
+    );
+  }
+}
+
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -91,6 +210,7 @@ export default function Home() {
         body: JSON.stringify({
           message,
           sessionId,
+          language,
         }),
       });
 
@@ -220,6 +340,34 @@ export default function Home() {
         )}
       </section>
 
+      <div className="mb-2 flex items-center gap-2">
+  <label
+    htmlFor="language"
+    className="text-sm text-gray-600"
+  >
+    Language
+  </label>
+
+  <select
+    id="language"
+    value={language}
+    onChange={(event) =>
+      setLanguage(
+        event.target.value as
+          | "en-IN"
+          | "as-IN"
+          | "brx-IN",
+      )
+    }
+    disabled={loading || recording || transcribing}
+    className="rounded-lg border px-3 py-2 text-sm"
+  >
+    <option value="en-IN">English</option>
+    <option value="as-IN">Assamese</option>
+    <option value="brx-IN">Bodo</option>
+  </select>
+</div>
+
       <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
         <input
           value={input}
@@ -228,6 +376,27 @@ export default function Home() {
           disabled={loading || !sessionId}
           className="flex-1 rounded-lg border px-4 py-3 outline-none"
         />
+
+        <button
+  type="button"
+  onClick={toggleRecording}
+  disabled={
+    loading ||
+    !sessionId ||
+    transcribing
+  }
+  className={`rounded-lg border px-4 py-3 ${
+    recording
+      ? "border-red-500 bg-red-50 text-red-600"
+      : ""
+  }`}
+>
+  {transcribing
+    ? "..."
+    : recording
+      ? "Stop"
+      : "🎤"}
+</button>
 
         <button
           type="submit"
