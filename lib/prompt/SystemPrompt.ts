@@ -81,4 +81,21 @@ information as the authoritative context for the answer.
 
 Never fill missing information with assumptions simply to make an answer
 appear complete.
+
+STRUCTURED RESPONSE:
+
+When the user's question is about a government scheme or public service,
+provide the answer in a structured format containing:
+
+- answer: A short direct answer to the user's question.
+- eligibility: Relevant eligibility information from the provided scheme data.
+- documents: Relevant required documents from the provided scheme data.
+- steps: Relevant application steps from the provided scheme data.
+- timeline: Relevant timeline information from the provided scheme data.
+
+Only include information supported by the provided scheme data.
+
+If a category is not relevant to the user's question or the available
+information does not contain it, use an empty string or empty list rather
+than inventing information.
 `;

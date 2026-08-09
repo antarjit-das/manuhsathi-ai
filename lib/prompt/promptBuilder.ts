@@ -69,5 +69,19 @@ ${schemeContext || "No relevant scheme information was found."}
 CURRENT USER QUESTION:
 
 ${userMessage}
+
+RESPONSE FORMAT:
+
+Return a valid JSON object with exactly these fields:
+
+{
+  "answer": "string",
+  "eligibility": "string",
+  "documents": [],
+  "steps": [],
+  "timeline": "string"
+}
+
+Return JSON only. Do not include markdown code fences.
 `;
 }

@@ -2,9 +2,17 @@
 
 import { FormEvent, useEffect, useState } from "react";
 
+type StructuredResponse = {
+  eligibility: string;
+  documents: string[];
+  steps: string[];
+  timeline: string;
+};
+
 type Message = {
   role: "user" | "assistant";
   content: string;
+  structured?: StructuredResponse;
 };
 
 export default function Home() {
@@ -97,6 +105,7 @@ export default function Home() {
         {
           role: "assistant",
           content: data.answer,
+          structured: data.structured,
         },
       ]);
     } catch (error) {
@@ -108,6 +117,7 @@ export default function Home() {
           role: "assistant",
           content:
             "Sorry, something went wrong while processing your message.",
+          structured: undefined,
         },
       ]);
     } finally {
@@ -155,6 +165,51 @@ export default function Home() {
             </strong>
 
             <p className="mt-1 whitespace-pre-wrap">{message.content}</p>
+            {message.role === "assistant" && message.structured && (
+  <div className="mt-4 space-y-3">
+    {message.structured.eligibility && (
+      <div className="rounded-lg border bg-white p-3">
+        <h3 className="font-semibold">Eligibility</h3>
+        <p className="mt-1 whitespace-pre-wrap text-sm">
+          {message.structured.eligibility}
+        </p>
+      </div>
+    )}
+
+    {message.structured.documents.length > 0 && (
+      <div className="rounded-lg border bg-white p-3">
+        <h3 className="font-semibold">Documents</h3>
+
+        <ul className="mt-1 list-disc pl-5 text-sm">
+          {message.structured.documents.map((document, documentIndex) => (
+            <li key={documentIndex}>{document}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {message.structured.steps.length > 0 && (
+      <div className="rounded-lg border bg-white p-3">
+        <h3 className="font-semibold">Application Steps</h3>
+
+        <ol className="mt-1 list-decimal pl-5 text-sm">
+          {message.structured.steps.map((step, stepIndex) => (
+            <li key={stepIndex}>{step}</li>
+          ))}
+        </ol>
+      </div>
+    )}
+
+    {message.structured.timeline && (
+      <div className="rounded-lg border bg-white p-3">
+        <h3 className="font-semibold">Timeline</h3>
+        <p className="mt-1 whitespace-pre-wrap text-sm">
+          {message.structured.timeline}
+        </p>
+      </div>
+    )}
+  </div>
+)}
           </div>
         ))}
 

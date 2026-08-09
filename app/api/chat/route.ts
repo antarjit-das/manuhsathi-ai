@@ -94,9 +94,35 @@ export async function POST(request: Request) {
     const response = await geminiClient.models.generateContent({
       model: "gemini-3.6-flash",
       contents: prompt,
-    });
+});
 
-    const answer = response.text;
+    const rawAnswer = response.text?.trim();
+
+    if (!rawAnswer) {
+      throw new Error("Gemini returned an empty response.");
+    }
+
+    let structuredResponse;
+
+    try {
+      structuredResponse = JSON.parse(rawAnswer);
+    } catch {
+      console.error("Gemini returned invalid JSON:", rawAnswer);
+
+      return NextResponse.json(
+        { error: "Gemini returned an invalid structured response." },
+        { status: 500 },
+      );
+    }
+
+    const {
+      answer = "",
+      eligibility = "",
+      documents = [],
+      steps = [],
+      timeline = "",
+    } = structuredResponse;
+
 
     const { error: assistantMessageError } = await supabaseAdmin
       .from("messages")
@@ -105,6 +131,15 @@ export async function POST(request: Request) {
         session_id: sessionId,
         role: "assistant",
         content: answer,
+      });
+      return NextResponse.json({
+        answer,
+        structured: {
+          eligibility,
+          documents,
+          steps,
+          timeline,
+        },
       });
 
     if (assistantMessageError) {
@@ -120,8 +155,14 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({
-      answer,
-    });
+  answer,
+  structured: {
+    eligibility,
+    documents,
+    steps,
+    timeline,
+  },
+});
   } catch (error) {
     console.error("Chat API error:", error);
 
