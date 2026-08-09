@@ -20,6 +20,21 @@ type Message = {
   structured?: StructuredResponse;
 };
 
+/* ── Language display labels ── */
+const LANG_LABELS: Record<string, string> = {
+  "en-IN": "EN",
+  "as-IN": "অসমীয়া",
+  "brx-IN": "बड़ो",
+};
+
+/* ── Starter prompts for empty state ── */
+const STARTER_PROMPTS = [
+  "How do I apply for an income certificate?",
+  "Am I eligible for a scholarship?",
+  "Tell me about PM-Kisan",
+  "What documents do I need for an old-age pension?",
+];
+
 export default function Home() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -35,6 +50,8 @@ export default function Home() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
 
 
@@ -58,6 +75,13 @@ export default function Home() {
 
     createSession();
   }, []);
+
+  /* Auto-scroll to bottom on new messages */
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, loading]);
 
   async function handleNewChat() {
   try {
@@ -245,167 +269,791 @@ async function toggleRecording() {
     }
   }
 
+  /* ── Helper: submit a starter prompt ── */
+  function handleStarterClick(prompt: string) {
+    setInput(prompt);
+    /* Use a microtask so the input state is set before form submission */
+    setTimeout(() => {
+      const form = document.getElementById("chat-form") as HTMLFormElement | null;
+      if (form) form.requestSubmit();
+    }, 0);
+  }
+
+  /* ── Render ── */
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col p-6">
-      <header className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">ManuhSathi AI</h1>
-          <p className="mt-1 text-gray-600">
-            Government scheme and public service assistant
-          </p>
+    <main
+      className="ms-viewport-height"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        maxWidth: "760px",
+        margin: "0 auto",
+        width: "100%",
+        fontFamily: "var(--ms-font-sans)",
+      }}
+    >
+      {/* ═══════════ HEADER ═══════════ */}
+      <header
+        className="ms-header-wrap"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 16px",
+          borderBottom: "1px solid var(--ms-border-subtle)",
+          flexShrink: 0,
+        }}
+      >
+        {/* Brand */}
+        <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+          <h1
+            style={{
+              fontFamily: "var(--ms-font-serif)",
+              fontSize: "1.35rem",
+              fontWeight: 400,
+              color: "var(--ms-text-primary)",
+              letterSpacing: "-0.01em",
+              margin: 0,
+            }}
+          >
+            ManuhSathi AI
+          </h1>
+          <span
+            className="ms-header-brand-subtitle"
+            style={{
+              fontSize: "0.75rem",
+              color: "var(--ms-text-tertiary)",
+              fontWeight: 400,
+            }}
+          >
+            Public-service assistant
+          </span>
         </div>
 
-        <button
-          type="button"
-          onClick={handleNewChat}
-          className="rounded-lg border px-4 py-2"
-        >
-          New Chat
-        </button>
+        {/* Right side controls */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {/* Language selector */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "2px",
+              background: "var(--ms-bg-secondary)",
+              borderRadius: "var(--ms-radius)",
+              padding: "3px",
+            }}
+          >
+            {(["en-IN", "as-IN", "brx-IN"] as const).map((lang) => (
+              <button
+                key={lang}
+                type="button"
+                onClick={() => setLanguage(lang)}
+                disabled={loading || recording || transcribing}
+                aria-label={`Switch to ${lang === "en-IN" ? "English" : lang === "as-IN" ? "Assamese" : "Bodo"}`}
+                aria-pressed={language === lang}
+                className="ms-lang-btn"
+                style={{
+                  padding: "5px 12px",
+                  fontSize: "0.75rem",
+                  fontWeight: language === lang ? 500 : 400,
+                  borderRadius: "var(--ms-radius-sm)",
+                  border: "none",
+                  cursor: loading || recording || transcribing ? "not-allowed" : "pointer",
+                  transition: "all 0.2s ease",
+                  background: language === lang ? "var(--ms-accent-muted)" : "transparent",
+                  color: language === lang ? "var(--ms-accent-hover)" : "var(--ms-text-secondary)",
+                  opacity: loading || recording || transcribing ? 0.5 : 1,
+                }}
+              >
+                {LANG_LABELS[lang]}
+              </button>
+            ))}
+          </div>
+
+          {/* New Chat */}
+          <button
+            type="button"
+            onClick={handleNewChat}
+            aria-label="Start new conversation"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "6px 14px",
+              fontSize: "0.78rem",
+              fontWeight: 400,
+              borderRadius: "var(--ms-radius)",
+              border: "1px solid var(--ms-border)",
+              background: "transparent",
+              color: "var(--ms-text-secondary)",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "var(--ms-accent)";
+              e.currentTarget.style.color = "var(--ms-text-primary)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--ms-border)";
+              e.currentTarget.style.color = "var(--ms-text-secondary)";
+            }}
+          >
+            {/* Plus icon */}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            New
+          </button>
+        </div>
       </header>
 
-      <section className="flex-1 space-y-4 overflow-y-auto rounded-lg border p-4">
+      {/* ═══════════ CHAT AREA ═══════════ */}
+      <div
+        ref={scrollRef}
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "20px 16px",
+        }}
+      >
+        {/* ── Empty State ── */}
         {messages.length === 0 && (
-          <p className="text-gray-500">
-            Ask me about government schemes and public services.
-          </p>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "60vh",
+              textAlign: "center",
+              gap: "8px",
+            }}
+          >
+            <h2
+              className="ms-empty-heading"
+              style={{
+                fontFamily: "var(--ms-font-serif)",
+                fontSize: "2.2rem",
+                fontWeight: 400,
+                color: "var(--ms-text-primary)",
+                letterSpacing: "-0.02em",
+                margin: 0,
+              }}
+            >
+              ManuhSathi AI
+            </h2>
+            <p
+              className="ms-empty-desc"
+              style={{
+                fontSize: "0.95rem",
+                color: "var(--ms-text-secondary)",
+                maxWidth: "420px",
+                lineHeight: 1.6,
+                marginTop: "6px",
+                padding: "0 8px",
+              }}
+            >
+              A multilingual assistant that helps you understand
+              government services, eligibility, documents and
+              application steps.
+            </p>
+
+            {/* Starter prompts */}
+            <p
+              style={{
+                fontSize: "0.78rem",
+                color: "var(--ms-text-tertiary)",
+                margin: 0,
+                marginTop: "28px",
+                marginBottom: "10px",
+                letterSpacing: "0.01em",
+                padding: "0 8px",
+              }}
+            >
+              Try these sample prompts
+            </p>
+            <div
+              className="ms-starter-grid"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "8px",
+                maxWidth: "520px",
+                width: "100%",
+                padding: "0 8px",
+              }}
+            >
+              {STARTER_PROMPTS.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  onClick={() => handleStarterClick(prompt)}
+                  disabled={loading || !sessionId}
+                  style={{
+                    padding: "12px 16px",
+                    fontSize: "0.82rem",
+                    color: "var(--ms-text-secondary)",
+                    background: "var(--ms-bg-secondary)",
+                    border: "1px solid var(--ms-border-subtle)",
+                    borderRadius: "var(--ms-radius)",
+                    cursor: loading || !sessionId ? "not-allowed" : "pointer",
+                    textAlign: "left",
+                    lineHeight: 1.45,
+                    transition: "all 0.2s ease",
+                    opacity: loading || !sessionId ? 0.5 : 1,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!loading && sessionId) {
+                      e.currentTarget.style.borderColor = "var(--ms-accent)";
+                      e.currentTarget.style.color = "var(--ms-text-primary)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "var(--ms-border-subtle)";
+                    e.currentTarget.style.color = "var(--ms-text-secondary)";
+                  }}
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
 
+        {/* ── Messages ── */}
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`rounded-lg p-3 ${
-              message.role === "user"
-                ? "ml-auto max-w-[80%] bg-blue-100"
-                : "mr-auto max-w-[80%] bg-gray-100"
-            }`}
+            className="ms-message-enter"
+            style={{
+              display: "flex",
+              justifyContent: message.role === "user" ? "flex-end" : "flex-start",
+              marginBottom: "20px",
+            }}
           >
-            <strong className="block text-sm">
-              {message.role === "user" ? "You" : "ManuhSathi"}
-            </strong>
+            {message.role === "user" ? (
+              /* ── User message ── */
+              <div
+                style={{
+                  maxWidth: "75%",
+                  padding: "12px 16px",
+                  background: "var(--ms-user-bg)",
+                  borderRadius: "var(--ms-radius-lg) var(--ms-radius-lg) var(--ms-radius-sm) var(--ms-radius-lg)",
+                  color: "var(--ms-text-primary)",
+                  fontSize: "0.9rem",
+                  lineHeight: 1.6,
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                }}
+              >
+                {message.content}
+              </div>
+            ) : (
+              /* ── Assistant message ── */
+              <div style={{ maxWidth: "min(85%, 100%)", width: "100%" }}>
+                {/* Label */}
+                <div
+                  style={{
+                    fontSize: "0.7rem",
+                    fontWeight: 500,
+                    color: "var(--ms-accent)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.06em",
+                    marginBottom: "6px",
+                  }}
+                >
+                  ManuhSathi
+                </div>
 
-            <p className="mt-1 whitespace-pre-wrap">{message.content}</p>
-            {message.role === "assistant" && message.structured && (
-  <div className="mt-4 space-y-3">
-    {message.structured.eligibility && (
-      <div className="rounded-lg border bg-white p-3">
-        <h3 className="font-semibold">Eligibility</h3>
-        <p className="mt-1 whitespace-pre-wrap text-sm">
-          {message.structured.eligibility}
-        </p>
-      </div>
-    )}
+                {/* Content */}
+                <div
+                  style={{
+                    fontSize: "0.9rem",
+                    lineHeight: 1.7,
+                    color: "var(--ms-text-primary)",
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {message.content}
+                </div>
 
-    {message.structured.documents.length > 0 && (
-      <div className="rounded-lg border bg-white p-3">
-        <h3 className="font-semibold">Documents</h3>
+                {/* ── Structured Response ── */}
+                {message.structured && (
+                  <div style={{ marginTop: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
 
-        <ul className="mt-1 list-disc pl-5 text-sm">
-          {message.structured.documents.map((document, documentIndex) => (
-            <li key={documentIndex}>{document}</li>
-          ))}
-        </ul>
-      </div>
-    )}
+                    {/* Eligibility */}
+                    {message.structured.eligibility && (
+                      <div
+                        className="ms-structured-card"
+                        style={{
+                          padding: "14px 16px",
+                          background: "var(--ms-bg-tertiary)",
+                          borderRadius: "var(--ms-radius)",
+                          borderLeft: "3px solid var(--ms-accent)",
+                        }}
+                      >
+                        <h3
+                          style={{
+                            fontFamily: "var(--ms-font-serif)",
+                            fontSize: "0.92rem",
+                            fontWeight: 400,
+                            color: "var(--ms-text-primary)",
+                            margin: "0 0 8px 0",
+                          }}
+                        >
+                          Eligibility
+                        </h3>
+                        <p
+                          style={{
+                            fontSize: "0.84rem",
+                            lineHeight: 1.65,
+                            color: "var(--ms-text-secondary)",
+                            margin: 0,
+                            whiteSpace: "pre-wrap",
+                          }}
+                        >
+                          {message.structured.eligibility}
+                        </p>
+                      </div>
+                    )}
 
-    {message.structured.steps.length > 0 && (
-      <div className="rounded-lg border bg-white p-3">
-        <h3 className="font-semibold">Application Steps</h3>
+                    {/* Documents */}
+                    {message.structured.documents.length > 0 && (
+                      <div
+                        className="ms-structured-card"
+                        style={{
+                          padding: "14px 16px",
+                          background: "var(--ms-bg-tertiary)",
+                          borderRadius: "var(--ms-radius)",
+                        }}
+                      >
+                        <h3
+                          style={{
+                            fontFamily: "var(--ms-font-serif)",
+                            fontSize: "0.92rem",
+                            fontWeight: 400,
+                            color: "var(--ms-text-primary)",
+                            margin: "0 0 10px 0",
+                          }}
+                        >
+                          Required Documents
+                        </h3>
+                        <ul
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0",
+                            listStyle: "none",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "6px",
+                          }}
+                        >
+                          {message.structured.documents.map((document, documentIndex) => (
+                            <li
+                              key={documentIndex}
+                              style={{
+                                display: "flex",
+                                alignItems: "flex-start",
+                                gap: "8px",
+                                fontSize: "0.84rem",
+                                lineHeight: 1.55,
+                                color: "var(--ms-text-secondary)",
+                              }}
+                            >
+                              {/* Document marker */}
+                              <span
+                                style={{
+                                  display: "inline-block",
+                                  width: "5px",
+                                  height: "5px",
+                                  borderRadius: "50%",
+                                  background: "var(--ms-accent)",
+                                  marginTop: "7px",
+                                  flexShrink: 0,
+                                }}
+                              />
+                              {document}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-        <ol className="mt-1 list-decimal pl-5 text-sm">
-          {message.structured.steps.map((step, stepIndex) => (
-            <li key={stepIndex}>{step}</li>
-          ))}
-        </ol>
-      </div>
-    )}
+                    {/* Application Steps */}
+                    {message.structured.steps.length > 0 && (
+                      <div
+                        className="ms-structured-card"
+                        style={{
+                          padding: "14px 16px",
+                          background: "var(--ms-bg-tertiary)",
+                          borderRadius: "var(--ms-radius)",
+                        }}
+                      >
+                        <h3
+                          style={{
+                            fontFamily: "var(--ms-font-serif)",
+                            fontSize: "0.92rem",
+                            fontWeight: 400,
+                            color: "var(--ms-text-primary)",
+                            margin: "0 0 12px 0",
+                          }}
+                        >
+                          Application Steps
+                        </h3>
+                        <ol
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0",
+                            listStyle: "none",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "10px",
+                          }}
+                        >
+                          {message.structured.steps.map((step, stepIndex) => (
+                            <li
+                              key={stepIndex}
+                              style={{
+                                display: "flex",
+                                alignItems: "flex-start",
+                                gap: "12px",
+                                fontSize: "0.84rem",
+                                lineHeight: 1.55,
+                                color: "var(--ms-text-secondary)",
+                              }}
+                            >
+                              {/* Step number */}
+                              <span
+                                style={{
+                                  fontFamily: "var(--ms-font-serif)",
+                                  fontSize: "0.8rem",
+                                  fontWeight: 400,
+                                  color: "var(--ms-accent)",
+                                  minWidth: "22px",
+                                  paddingTop: "1px",
+                                }}
+                              >
+                                {String(stepIndex + 1).padStart(2, "0")}
+                              </span>
+                              {step}
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
 
-    {message.structured.timeline && (
-      <div className="rounded-lg border bg-white p-3">
-        <h3 className="font-semibold">Timeline</h3>
-        <p className="mt-1 whitespace-pre-wrap text-sm">
-          {message.structured.timeline}
-        </p>
-      </div>
-    )}
-  </div>
-)}
+                    {/* Timeline */}
+                    {message.structured.timeline && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          padding: "10px 14px",
+                          background: "var(--ms-bg-tertiary)",
+                          borderRadius: "var(--ms-radius)",
+                          fontSize: "0.82rem",
+                          color: "var(--ms-text-secondary)",
+                        }}
+                      >
+                        {/* Clock icon */}
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="var(--ms-accent)"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          style={{ flexShrink: 0 }}
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        <span style={{ whiteSpace: "pre-wrap" }}>{message.structured.timeline}</span>
+                      </div>
+                    )}
+
+                    {/* Disclaimer */}
+                    <p
+                      style={{
+                        fontSize: "0.72rem",
+                        lineHeight: 1.5,
+                        color: "var(--ms-text-tertiary)",
+                        margin: 0,
+                        paddingTop: "4px",
+                        borderTop: "1px solid var(--ms-border-subtle)",
+                      }}
+                    >
+                      This information is for general guidance only. Please verify details with the relevant government authority.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ))}
 
+        {/* ── Loading ── */}
         {loading && (
-          <div className="mr-auto rounded-lg bg-gray-100 p-3">
-            ManuhSathi is thinking...
+          <div
+            className="ms-message-enter"
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              marginBottom: "20px",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: "0.7rem",
+                  fontWeight: 500,
+                  color: "var(--ms-accent)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
+                  marginBottom: "6px",
+                }}
+              >
+                ManuhSathi
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  color: "var(--ms-text-tertiary)",
+                  fontSize: "0.84rem",
+                }}
+              >
+                <span>Thinking</span>
+                <span style={{ display: "flex", gap: "3px" }}>
+                  <span className="ms-thinking-dot" />
+                  <span className="ms-thinking-dot" />
+                  <span className="ms-thinking-dot" />
+                </span>
+              </div>
+            </div>
           </div>
         )}
-      </section>
+      </div>
 
-      <div className="mb-2 flex items-center gap-2">
-  <label
-    htmlFor="language"
-    className="text-sm text-gray-600"
-  >
-    Language
-  </label>
-
-  <select
-    id="language"
-    value={language}
-    onChange={(event) =>
-      setLanguage(
-        event.target.value as
-          | "en-IN"
-          | "as-IN"
-          | "brx-IN",
-      )
-    }
-    disabled={loading || recording || transcribing}
-    className="rounded-lg border px-3 py-2 text-sm"
-  >
-    <option value="en-IN">English</option>
-    <option value="as-IN">Assamese</option>
-    <option value="brx-IN">Bodo</option>
-  </select>
-</div>
-
-      <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
-        <input
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          placeholder="Ask about a government scheme..."
-          disabled={loading || !sessionId}
-          className="flex-1 rounded-lg border px-4 py-3 outline-none"
-        />
-
-        <button
-  type="button"
-  onClick={toggleRecording}
-  disabled={
-    loading ||
-    !sessionId ||
-    transcribing
-  }
-  className={`rounded-lg border px-4 py-3 ${
-    recording
-      ? "border-red-500 bg-red-50 text-red-600"
-      : ""
-  }`}
->
-  {transcribing
-    ? "..."
-    : recording
-      ? "Stop"
-      : "🎤"}
-</button>
-
-        <button
-          type="submit"
-          disabled={loading || !sessionId || !input.trim()}
-          className="rounded-lg bg-black px-5 py-3 text-white disabled:opacity-50"
+      {/* ═══════════ INPUT AREA ═══════════ */}
+      <div
+        className="ms-input-wrapper ms-safe-bottom"
+        style={{
+          flexShrink: 0,
+          padding: "12px 16px 20px",
+          borderTop: "1px solid var(--ms-border-subtle)",
+        }}
+      >
+        <form
+          id="chat-form"
+          onSubmit={handleSubmit}
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            gap: "8px",
+            background: "var(--ms-bg-secondary)",
+            borderRadius: "var(--ms-radius-lg)",
+            border: "1px solid var(--ms-border)",
+            padding: "8px 8px 8px 14px",
+            transition: "border-color 0.2s ease",
+          }}
+          onFocus={(e) => {
+            (e.currentTarget as HTMLElement).style.borderColor = "var(--ms-accent)";
+          }}
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--ms-border)";
+            }
+          }}
         >
-          {loading ? "Sending..." : "Send"}
-        </button>
-      </form>
+          {/* Textarea */}
+          <textarea
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                const form = e.currentTarget.closest("form");
+                if (form) form.requestSubmit();
+              }
+            }}
+            placeholder="Ask about a government scheme..."
+            disabled={loading || !sessionId}
+            rows={1}
+            aria-label="Type your message"
+            style={{
+              flex: 1,
+              background: "transparent",
+              border: "none",
+              outline: "none",
+              resize: "none",
+              color: "var(--ms-text-primary)",
+              fontSize: "0.88rem",
+              lineHeight: 1.55,
+              padding: "6px 0",
+              maxHeight: "120px",
+              fontFamily: "var(--ms-font-sans)",
+            }}
+          />
+
+          {/* Microphone button */}
+          <button
+            type="button"
+            onClick={toggleRecording}
+            disabled={
+              loading ||
+              !sessionId ||
+              transcribing
+            }
+            aria-label={
+              transcribing
+                ? "Processing speech"
+                : recording
+                  ? "Stop recording"
+                  : "Record voice message"
+            }
+            className={recording ? "ms-recording-active" : ""}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "40px",
+              height: "40px",
+              minWidth: "40px",
+              minHeight: "40px",
+              borderRadius: "50%",
+              border: "none",
+              cursor: loading || !sessionId || transcribing ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+              flexShrink: 0,
+              background: recording
+                ? "var(--ms-recording-bg)"
+                : transcribing
+                  ? "var(--ms-bg-tertiary)"
+                  : "transparent",
+              color: recording
+                ? "var(--ms-recording)"
+                : "var(--ms-text-secondary)",
+              opacity: loading || !sessionId || transcribing ? 0.4 : 1,
+            }}
+          >
+            {transcribing ? (
+              /* Processing dots */
+              <span style={{ display: "flex", gap: "2px" }}>
+                <span className="ms-thinking-dot" />
+                <span className="ms-thinking-dot" />
+                <span className="ms-thinking-dot" />
+              </span>
+            ) : recording ? (
+              /* Stop icon */
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="6" width="12" height="12" rx="2" />
+              </svg>
+            ) : (
+              /* Mic icon */
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="2" width="6" height="12" rx="3" />
+                <path d="M5 10a7 7 0 0 0 14 0" />
+                <line x1="12" y1="18" x2="12" y2="22" />
+                <line x1="8" y1="22" x2="16" y2="22" />
+              </svg>
+            )}
+          </button>
+
+          {/* Send button */}
+          <button
+            type="submit"
+            disabled={loading || !sessionId || !input.trim()}
+            aria-label={loading ? "Sending message" : "Send message"}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "40px",
+              height: "40px",
+              minWidth: "40px",
+              minHeight: "40px",
+              borderRadius: "50%",
+              border: "none",
+              cursor: loading || !sessionId || !input.trim() ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+              flexShrink: 0,
+              background:
+                loading || !sessionId || !input.trim()
+                  ? "var(--ms-bg-tertiary)"
+                  : "var(--ms-accent)",
+              color:
+                loading || !sessionId || !input.trim()
+                  ? "var(--ms-text-tertiary)"
+                  : "var(--ms-bg-primary)",
+              opacity: loading || !sessionId || !input.trim() ? 0.5 : 1,
+            }}
+          >
+            {loading ? (
+              /* Loading dots */
+              <span style={{ display: "flex", gap: "2px" }}>
+                <span className="ms-thinking-dot" />
+                <span className="ms-thinking-dot" />
+              </span>
+            ) : (
+              /* Send arrow */
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+              </svg>
+            )}
+          </button>
+        </form>
+
+        {/* Recording indicator */}
+        {recording && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
+              marginTop: "8px",
+              fontSize: "0.75rem",
+              color: "var(--ms-recording)",
+            }}
+          >
+            <span
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "var(--ms-recording)",
+                animation: "ms-pulse 1s ease-in-out infinite",
+              }}
+            />
+            Recording — tap the mic to stop
+          </div>
+        )}
+
+        {/* Transcribing indicator */}
+        {transcribing && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
+              marginTop: "8px",
+              fontSize: "0.75rem",
+              color: "var(--ms-text-tertiary)",
+            }}
+          >
+            Transcribing your speech…
+          </div>
+        )}
+      </div>
     </main>
   );
 }
