@@ -5,8 +5,10 @@ import { buildPrompt } from "@/lib/prompt/promptBuilder";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();    //reading data from frontend
+    const body = await request.json();
+
     const userMessage = body.message;
+    const sessionId = body.sessionId;
 
     if (
       typeof userMessage !== "string" ||
@@ -15,6 +17,47 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "Message is required." },
         { status: 400 },
+      );
+    }
+
+    if (typeof sessionId !== "string" || sessionId.trim().length === 0) {
+      return NextResponse.json(
+        { error: "Session ID is required." },
+        { status: 400 },
+      );
+    }
+
+    const { data: previousMessages, error: messagesError } =
+      await supabaseAdmin
+        .from("messages")
+        .select("role, content")
+        .eq("session_id", sessionId)
+        .order("created_at", { ascending: true });
+
+    if (messagesError) {
+      console.error("Failed to fetch messages:", messagesError);
+
+      return NextResponse.json(
+        { error: "Failed to retrieve conversation history." },
+        { status: 500 },
+      );
+    }
+
+    const { error: userMessageError } = await supabaseAdmin
+      .from("messages")
+      .insert({
+        message_id: crypto.randomUUID(),
+        session_id: sessionId,
+        role: "user",
+        content: userMessage.trim(),
+      });
+
+    if (userMessageError) {
+      console.error("Failed to save user message:", userMessageError);
+
+      return NextResponse.json(
+        { error: "Failed to save message." },
+        { status: 500 },
       );
     }
 
@@ -45,6 +88,7 @@ export async function POST(request: Request) {
     const prompt = buildPrompt({
       userMessage: userMessage.trim(),
       schemes: schemes ?? [],
+      conversationHistory: previousMessages ?? [],
     });
 
     const response = await geminiClient.models.generateContent({
@@ -52,8 +96,31 @@ export async function POST(request: Request) {
       contents: prompt,
     });
 
+    const answer = response.text;
+
+    const { error: assistantMessageError } = await supabaseAdmin
+      .from("messages")
+      .insert({
+        message_id: crypto.randomUUID(),
+        session_id: sessionId,
+        role: "assistant",
+        content: answer,
+      });
+
+    if (assistantMessageError) {
+      console.error(
+        "Failed to save assistant message:",
+        assistantMessageError,
+      );
+
+      return NextResponse.json(
+        { error: "Failed to save assistant response." },
+        { status: 500 },
+      );
+    }
+
     return NextResponse.json({
-      answer: response.text,
+      answer,
     });
   } catch (error) {
     console.error("Chat API error:", error);

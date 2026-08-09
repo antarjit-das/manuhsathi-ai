@@ -44,7 +44,7 @@ export default function Home() {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to create session");
+      throw new Error("Failed to create session :(");
     }
 
     const data = await response.json();

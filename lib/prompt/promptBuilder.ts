@@ -1,25 +1,30 @@
-//essentially takes the user's question and the government-scheme information, and turn them into one big piece of final prompt (text) thats to be sent to Gemini.
-
 import { SystemPrompt } from "./SystemPrompt";
 
 type SchemeContext = {
   name: string;
   category: string;
-  states_applicable: string[];
+  states_applicable: string;
   eligibility_summary: string;
-  required_documents: string[];
-  application_steps: string[];
+  required_documents: string;
+  application_steps: string;
   estimated_timeline: string;
+};
+
+type ConversationMessage = {
+  role: "user" | "assistant";
+  content: string;
 };
 
 type BuildPromptInput = {
   userMessage: string;
   schemes: SchemeContext[];
+  conversationHistory: ConversationMessage[];
 };
 
 export function buildPrompt({
   userMessage,
   schemes,
+  conversationHistory,
 }: BuildPromptInput): string {
   const schemeContext = schemes
     .map(
@@ -43,14 +48,25 @@ ${scheme.estimated_timeline}
     )
     .join("\n---\n");
 
+  const conversationContext = conversationHistory
+    .map(
+      (message) =>
+        `${message.role === "user" ? "User" : "ManuhSathi"}: ${message.content}`,
+    )
+    .join("\n");
+
   return `
 ${SystemPrompt}
+
+CONVERSATION HISTORY:
+
+${conversationContext || "No previous conversation."}
 
 AVAILABLE GOVERNMENT SCHEME INFORMATION:
 
 ${schemeContext || "No relevant scheme information was found."}
 
-USER QUESTION:
+CURRENT USER QUESTION:
 
 ${userMessage}
 `;
