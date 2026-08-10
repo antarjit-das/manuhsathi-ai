@@ -27,13 +27,34 @@ const LANG_LABELS: Record<string, string> = {
   "brx-IN": "बड़ो",
 };
 
-/* ── Starter prompts for empty state ── */
-const STARTER_PROMPTS = [
-  "How do I apply for an income certificate?",
-  "Am I eligible for a scholarship?",
-  "Tell me about PM-Kisan",
-  "What documents do I need for an old-age pension?",
-];
+/* ── Starter prompts for empty state (per language) ── */
+const STARTER_PROMPTS_BY_LANG: Record<"en-IN" | "as-IN" | "brx-IN", string[]> = {
+  "en-IN": [
+    "How do I apply for an income certificate?",
+    "Am I eligible for a scholarship?",
+    "Tell me about PM-Kisan",
+    "What documents do I need for an old-age pension?",
+  ],
+  "as-IN": [
+    "ছাত্ৰ-ছাত্ৰীসকলৰ বাবে কি কি চৰকাৰী জলপানি আঁচনি উপলব্ধ আছে?",
+    "PM-KISAN আঁচনিৰ বাবে কোনসকল যোগ্য?",
+    "আয়ৰ প্ৰমাণপত্ৰৰ বাবে আবেদন কৰিবলৈ মোক কি কি নথি-পত্ৰৰ প্ৰয়োজন?",
+    "মই কেনেকৈ এখন চৰকাৰী আঁচনিৰ বাবে আবেদন কৰিব পাৰোঁ?",
+  ],
+  "brx-IN": [
+    "फरायसाफोरनि थाखाय मा मा सोलोंथाइयारि रां बान्थानि खाबु दं ?",
+    "आं माबोरै सरखारि नोगोरारिथिनि थाखै थिसाननो हागोन ?",
+    "PM KISA बिथांखिनि सोमोन्दै फोरमाय ।",
+    "बोराइ pension नि थाखाय मा मा फोरमान बिलाइनि गोनांथि जायो?",
+  ],
+};
+
+/* ── Center branding (per language) ── */
+const CENTER_BRANDING: Record<"en-IN" | "as-IN" | "brx-IN", string> = {
+  "en-IN": "ManuhSathi AI",
+  "as-IN": "মানুহসাথী AI",
+  "brx-IN": "मानुहसाथि AI",
+};
 
 export default function Home() {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -441,7 +462,7 @@ async function toggleRecording() {
                 margin: 0,
               }}
             >
-              ManuhSathi AI
+              {CENTER_BRANDING[language]}
             </h2>
             <p
               className="ms-empty-desc"
@@ -484,7 +505,7 @@ async function toggleRecording() {
                 padding: "0 8px",
               }}
             >
-              {STARTER_PROMPTS.map((prompt) => (
+              {STARTER_PROMPTS_BY_LANG[language].map((prompt) => (
                 <button
                   key={prompt}
                   type="button"
