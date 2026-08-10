@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
+import ListenButton from "@/components/chat/ListenButton";
 
 type StructuredResponse = {
   eligibility: string;
@@ -813,6 +814,14 @@ async function toggleRecording() {
                     </p>
                   </div>
                 )}
+
+                {/* ── TTS Listen Button ── */}
+                <ListenButton
+                  text={message.content}
+                  structured={message.structured}
+                  language={language}
+                  messageIndex={index}
+                />
               </div>
             )}
           </div>

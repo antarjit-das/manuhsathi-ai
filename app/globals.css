@@ -159,6 +159,17 @@ body {
   animation: ms-recording-pulse 1.5s ease-in-out infinite;
 }
 
+/* ── TTS Listen button spinner ── */
+
+@keyframes ms-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ── Textarea auto-resize helper ── */
 
 textarea {
