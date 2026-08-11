@@ -19,7 +19,8 @@ export async function POST(request: Request) {
       audio,
       language === "en-IN" ||
         language === "as-IN" ||
-        language === "brx-IN"
+        language === "brx-IN" ||
+        language === "ne-IN"
         ? language
         : undefined,
     );

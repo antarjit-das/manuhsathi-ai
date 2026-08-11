@@ -19,8 +19,8 @@ type ListenButtonProps = {
     steps?: string[];
     timeline?: string;
   };
-  /** Current language code: "en-IN" | "as-IN" | "brx-IN" */
-  language: "en-IN" | "as-IN" | "brx-IN";
+  /** Current language code: "en-IN" | "as-IN" | "brx-IN" | "ne-IN" */
+  language: "en-IN" | "as-IN" | "brx-IN" | "ne-IN";
   /** Unique key for this message to manage the global audio singleton */
   messageIndex: number;
 };
@@ -31,6 +31,7 @@ const LANG_MAP: Record<string, string> = {
   "en-IN": "en",
   "as-IN": "as",
   "brx-IN": "brx",
+  "ne-IN": "ne",
 };
 
 /* ─── Global audio singleton ─── */

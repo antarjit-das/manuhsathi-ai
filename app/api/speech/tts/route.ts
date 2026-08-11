@@ -29,10 +29,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const validLanguages = ["en", "as", "brx"];
+    const validLanguages = ["en", "as", "brx", "ne"];
     if (!language || !validLanguages.includes(language)) {
       return NextResponse.json(
-        { error: "Language must be one of: en, as, brx" },
+        { error: "Language must be one of: en, as, brx, ne" },
         { status: 400 }
       );
     }
@@ -45,6 +45,8 @@ export async function POST(request: Request) {
       selectedVoice = "Anjana";
     } else if (language === "brx") {
       selectedVoice = "Hasina";
+    } else if (language === "ne") {
+      selectedVoice = "Sapana";
     }
 
     // Clean text for natural speech

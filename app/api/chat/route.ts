@@ -9,6 +9,7 @@ export async function POST(request: Request) {
 
     const userMessage = body.message;
     const sessionId = body.sessionId;
+    const language = typeof body.language === "string" ? body.language : undefined;
 
     if (
       typeof userMessage !== "string" ||
@@ -43,24 +44,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const { error: userMessageError } = await supabaseAdmin
-      .from("messages")
-      .insert({
-        message_id: crypto.randomUUID(),
-        session_id: sessionId,
-        role: "user",
-        content: userMessage.trim(),
-      });
-
-    if (userMessageError) {
-      console.error("Failed to save user message:", userMessageError);
-
-      return NextResponse.json(
-        { error: "Failed to save message." },
-        { status: 500 },
-      );
-    }
-
     const { data: schemes, error: schemesError } =
       await supabaseAdmin
         .from("schemes")
@@ -85,10 +68,29 @@ export async function POST(request: Request) {
       );
     }
 
+    const { error: userMessageError } = await supabaseAdmin
+      .from("messages")
+      .insert({
+        message_id: crypto.randomUUID(),
+        session_id: sessionId,
+        role: "user",
+        content: userMessage.trim(),
+      });
+
+    if (userMessageError) {
+      console.error("Failed to save user message:", userMessageError);
+
+      return NextResponse.json(
+        { error: "Failed to save message." },
+        { status: 500 },
+      );
+    }
+
     const prompt = buildPrompt({
       userMessage: userMessage.trim(),
       schemes: schemes ?? [],
       conversationHistory: previousMessages ?? [],
+      language,
     });
 
     const response = await geminiClient.models.generateContent({

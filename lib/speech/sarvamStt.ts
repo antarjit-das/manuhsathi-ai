@@ -5,7 +5,8 @@ import { sarvamClient } from "./sarvamClient";
 export type SupportedSpeechLanguage =
   | "en-IN"
   | "as-IN"
-  | "brx-IN";
+  | "brx-IN"
+  | "ne-IN";
 
 export async function transcribeSpeech(
   file: File,

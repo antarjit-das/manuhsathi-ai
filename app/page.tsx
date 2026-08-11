@@ -26,10 +26,11 @@ const LANG_LABELS: Record<string, string> = {
   "en-IN": "EN",
   "as-IN": "অসমীয়া",
   "brx-IN": "बर'",
+  "ne-IN": "नेपाली",
 };
 
 /* ── Starter prompts for empty state (per language) ── */
-const STARTER_PROMPTS_BY_LANG: Record<"en-IN" | "as-IN" | "brx-IN", string[]> = {
+const STARTER_PROMPTS_BY_LANG: Record<"en-IN" | "as-IN" | "brx-IN" | "ne-IN", string[]> = {
   "en-IN": [
     "How do I apply for an income certificate?",
     "Am I eligible for a scholarship?",
@@ -48,13 +49,20 @@ const STARTER_PROMPTS_BY_LANG: Record<"en-IN" | "as-IN" | "brx-IN", string[]> = 
     "PM KISA बिथांखिनि सोमोन्दै फोरमाय ।",
     "बोराइ pension नि थाखाय मा मा फोरमान बिलाइनि गोनांथि जायो?",
   ],
+  "ne-IN": [
+    "आम्दानी प्रमाणपत्र बनाउन के के कागजात चाहिन्छ?",
+    "छात्रवृत्तिको लागि मेरो योग्यता छ कि छैन?",
+    "PM-KISAN योजनाको बारेमा बताउनुहोस्",
+    "बृद्धावस्था भत्ताको लागि कसरी आवेदन दिने?",
+  ],
 };
 
 /* ── Center branding (per language) ── */
-const CENTER_BRANDING: Record<"en-IN" | "as-IN" | "brx-IN", string> = {
+const CENTER_BRANDING: Record<"en-IN" | "as-IN" | "brx-IN" | "ne-IN", string> = {
   "en-IN": "ManuhSathi AI",
   "as-IN": "মানুহসাথী AI",
   "brx-IN": "मानुहसाथि AI",
+  "ne-IN": "मानुहसाथी AI",
 };
 
 export default function Home() {
@@ -63,7 +71,7 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useState<
-  "en-IN" | "as-IN" | "brx-IN"
+  "en-IN" | "as-IN" | "brx-IN" | "ne-IN"
 >("en-IN");
 
   const [recording, setRecording] = useState(false);
@@ -365,13 +373,13 @@ async function toggleRecording() {
               padding: "3px",
             }}
           >
-            {(["en-IN", "as-IN", "brx-IN"] as const).map((lang) => (
+            {(["en-IN", "as-IN", "brx-IN", "ne-IN"] as const).map((lang) => (
               <button
                 key={lang}
                 type="button"
                 onClick={() => setLanguage(lang)}
                 disabled={loading || recording || transcribing}
-                aria-label={`Switch to ${lang === "en-IN" ? "English" : lang === "as-IN" ? "Assamese" : "Bodo"}`}
+                aria-label={`Switch to ${lang === "en-IN" ? "English" : lang === "as-IN" ? "Assamese" : lang === "brx-IN" ? "Bodo" : "Nepali"}`}
                 aria-pressed={language === lang}
                 className="ms-lang-btn"
                 style={{
