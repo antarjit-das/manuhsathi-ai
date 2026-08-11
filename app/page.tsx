@@ -25,7 +25,7 @@ type Message = {
 const LANG_LABELS: Record<string, string> = {
   "en-IN": "EN",
   "as-IN": "অসমীয়া",
-  "brx-IN": "बड़ो",
+  "brx-IN": "बर'",
 };
 
 /* ── Starter prompts for empty state (per language) ── */
