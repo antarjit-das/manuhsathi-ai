@@ -20,7 +20,8 @@ export async function POST(request: Request) {
       language === "en-IN" ||
         language === "as-IN" ||
         language === "brx-IN" ||
-        language === "ne-IN"
+        language === "ne-IN" ||
+        language === "mni-IN"
         ? language
         : undefined,
     );

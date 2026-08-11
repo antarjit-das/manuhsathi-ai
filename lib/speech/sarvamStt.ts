@@ -6,7 +6,8 @@ export type SupportedSpeechLanguage =
   | "en-IN"
   | "as-IN"
   | "brx-IN"
-  | "ne-IN";
+  | "ne-IN"
+  | "mni-IN";
 
 export async function transcribeSpeech(
   file: File,

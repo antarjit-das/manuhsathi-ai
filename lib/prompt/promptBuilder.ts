@@ -41,6 +41,12 @@ Preserve official scheme names, portal names, organization names and proper noun
 Explain government terminology in simple Nepali.
 Do not randomly switch to Hindi or English.
 English may be retained for unavoidable official names, URLs, abbreviations, or technical terms.`,
+  "mni-IN": `Respond in Manipuri using Roman script (Latin letters / Romanized Meiteilon).
+Do NOT use Bengali script or Meitei Mayek script.
+Preserve official scheme names, portal names, organization names and proper nouns when appropriate.
+Explain government terminology in simple Manipuri (Roman script).
+Do not randomly switch to Hindi or English.
+English may be retained for unavoidable official names, URLs, abbreviations, or technical terms.`,
 };
 
 export function buildPrompt({

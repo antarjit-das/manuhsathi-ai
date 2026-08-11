@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 
 type MicrophoneButtonProps = {
-  language: "en-IN" | "as-IN" | "brx-IN" | "ne-IN";
+  language: "en-IN" | "as-IN" | "brx-IN" | "ne-IN" | "mni-IN";
   onTranscript: (text: string) => void;
   disabled?: boolean;
 };
