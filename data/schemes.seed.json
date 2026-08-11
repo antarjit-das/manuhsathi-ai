@@ -108,5 +108,235 @@
     "required_documents": "Documents commonly required include Aadhaar card, bank account details (must be Aadhaar-seeded, for DBT), an income certificate (or ration card as proof of income) confirming annual family income is below Rs. 4 lakh, mark sheet or certificate of the qualifying examination (such as Class XII mark sheet for Graduation, or Graduation mark sheet for Post-Graduation), proof of domicile/residency in Assam, valid mobile number and email ID, and a passport-size photograph. Exact document requirements should be confirmed with the student's respective educational institution or the Directorate of Higher Education, Assam, as they may vary by institution and academic year.",
     "application_steps": "The application process is conducted offline through the student's educational institution. Eligible students collect the application form from their respective college or university administration, fill the form with personal, academic, and bank account details, attach the required documents (including the income certificate), and submit the completed form to the Head of the Institution or the designated Nodal Officer. The institution verifies the student's details and uploads them to the official Directorate of Higher Education (DHE) portal for final approval and DBT processing. Application forms are typically distributed by institutions after an official notification from the Higher Education Department at the start of each academic session. Applicants should check with their institution's administration for the current session's application form availability and submission deadline, as specific dates change each year.",
     "estimated_timeline": "No fixed officially published processing timeline was found for this scheme; disbursal depends on institutional verification, Directorate-level approval, and DBT processing. Applicants should follow up with their institution's administration or the Directorate of Higher Education, Assam rather than assume a specific number of days."
+  },
+  {
+    "scheme_id": "ayushman_bharat_pmjay_all_india",
+    "name": "Ayushman Bharat – PM Jan Arogya Yojana (PMJAY)",
+    "category": "Health / Health Insurance",
+    "states_applicable": "All India",
+    "eligibility_summary": "Provides ₹5 lakh per family per year for cashless hospitalization at empanelled hospitals. Eligibility is primarily based on SECC 2011 deprivation categories, including landless households dependent on manual labour, female-headed households with no adult male aged 16–59, households with a disabled member and no able-bodied adult, and other qualifying deprivation categories. Senior citizens aged 70+ receive a separate top-up card called the Ayushman Vay Vandana Card. In Assam, the scheme is converged as Ayushman Asom–Mukhya Mantri Jan Arogya Yojana (AA-MMJAY) with broader coverage. Source-listed exclusions commonly include households owning a 2/3/4-wheeler, motorised fishing boat, government employees, or families earning above ₹10,000/month, though specific exclusion criteria vary by state.",
+    "required_documents": "Aadhaar card, ration card or SECC-listing proof, and proof of residence (such as voter ID or utility bill) if there is an address mismatch.",
+    "application_steps": "Check eligibility online at pmjay.gov.in using 'Am I Eligible' with mobile number and OTP. Select state/district/ration card details as applicable, complete e-KYC if eligible, and download the e-card. Offline applicants can visit a Common Service Centre (CSC) or an empanelled hospital Arogya Mitra desk with Aadhaar and ration card, where staff verify eligibility and upload documents for State Health Agency approval.",
+    "estimated_timeline": "Online e-KYC and card generation are usually same-day if eligibility is confirmed. Offline verification can take several days depending on State Health Agency approval."
+  },
+  {
+    "scheme_id": "nsap_all_india",
+    "name": "National Social Assistance Programme (NSAP)",
+    "category": "Social Welfare / Pension",
+    "states_applicable": "All India",
+    "eligibility_summary": "A central social assistance programme comprising multiple sub-schemes for Below Poverty Line (BPL) households. Sub-schemes include IGNOAPS (old age 60+, providing ₹200/month for ages 60–79 and ₹500/month for 80+), IGNWPS (BPL widows aged 40–79 receiving ₹300/month and ₹500/month from age 80), IGNDPS (BPL individuals aged 18–79 with 80%+ severe disability receiving ₹300/month and ₹500/month from age 80), NFBS (one-time ₹20,000 assistance on the death of the primary BPL breadwinner aged 18–59), and Annapurna (10 kg free foodgrain/month for eligible senior citizens not receiving a pension). State governments frequently provide top-up contributions over these central base amounts.",
+    "required_documents": "Proof of age, BPL card or income certificate, disability certificate from a recognized medical board (for IGNDPS), bank passbook details, and death certificate of breadwinner (for NFBS).",
+    "application_steps": "Apply online through the central NSAP portal at nsap.nic.in, or submit a paper application through the local Gram Panchayat, Block Office, or District Social Welfare office. After local verification and sanctioning, pensions and financial support are disbursed directly through Direct Benefit Transfer (DBT).",
+    "estimated_timeline": "Processing typically takes 1 to 3 months according to the supplied source, depending on state implementation, local verification backlog, and sanctioning cycles."
+  },
+  {
+    "scheme_id": "pmay_gramin_urban_all_india",
+    "name": "PM Awas Yojana (Gramin / Urban)",
+    "category": "Housing / Financial Assistance",
+    "states_applicable": "All India",
+    "eligibility_summary": "Provides financial assistance for house construction or pucca house allocation to eligible homeless families or households living in kutcha or dilapidated houses in rural (PMAY-G) and urban (PMAY-U) areas. Exact component-specific income thresholds and eligibility criteria depend on the specific PMAY component and current government guidelines.",
+    "required_documents": "Aadhaar card, income certificate, land or site documentation, caste certificate where applicable, and bank account details.",
+    "application_steps": "Apply through the Gram Panchayat (for rural PMAY-G) or Urban Local Body / Ward office (for urban PMAY-U), or register online via the official PMAY portal (pmaymis.gov.in / pmayg.nic.in). Applications undergo field verification against housing deprivation data.",
+    "estimated_timeline": "No fixed timeline is published in the supplied source; processing and installment disbursals depend on verification stages and construction progress."
+  },
+  {
+    "scheme_id": "pm_ujjwala_yojana_all_india",
+    "name": "Pradhan Mantri Ujjwala Yojana (PMUY)",
+    "category": "Energy / Household Assistance",
+    "states_applicable": "All India",
+    "eligibility_summary": "Provides deposit-free LPG connections to adult women belonging to eligible Below Poverty Line (BPL) or deprived households, aimed at providing clean cooking fuel and reducing health hazards from biomass fuel use.",
+    "required_documents": "Aadhaar card of applicant and adult household members, BPL card or ration card establishing household composition, residence proof, and bank passbook details.",
+    "application_steps": "Apply by visiting the nearest authorized LPG distributor (IOCL, BPCL, HPCL) or online via the official PMUY portal (pmuy.gov.in). Submit the application form along with mandatory documents for e-KYC and beneficiary verification.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; connection release depends on distributor verification and clearance."
+  },
+  {
+    "scheme_id": "pm_mudra_yojana_all_india",
+    "name": "Pradhan Mantri Mudra Yojana (PMMY)",
+    "category": "Business / Financial Assistance",
+    "states_applicable": "All India",
+    "eligibility_summary": "Provides collateral-free micro and small business loans up to ₹10 lakh to non-corporate, non-farm micro enterprises for income-generating activities in manufacturing, trading, services, and agriculture-allied sectors. Loans are categorized under Shishu (up to ₹50,000), Kishor (above ₹50,000 to ₹5 lakh), and Tarun (above ₹5 lakh to ₹10 lakh).",
+    "required_documents": "Business plan or project proposal, Aadhaar card, PAN card, address proof of enterprise, identity proof, and bank account statement.",
+    "application_steps": "Apply at any commercial bank, Regional Rural Bank (RRB), Non-Banking Financial Company (NBFC), or Microfinance Institution (MFI), or submit an online application via the JanSamarth portal (jansamarth.in).",
+    "estimated_timeline": "No fixed statutory processing timeline is specified in the supplied source; loan processing depends on the sanctioning financial institution."
+  },
+  {
+    "scheme_id": "orunodoi_assam",
+    "name": "Orunodoi 3.0/4.0",
+    "category": "Women / Financial Assistance / Social Welfare",
+    "states_applicable": "Assam",
+    "eligibility_summary": "Provides ₹1,250 per month via Direct Benefit Transfer (DBT) credited to the bank account of a nominated female member of eligible households in Assam. Eligible applicants must be permanent residents currently residing in Assam with annual household income below ₹2 lakh, generally covered under NFSA ration cards. Priority categories include widows, divorced or deserted women, unmarried women aged 45+, women in households with serious health conditions (such as HIV, Thalassemia, Cerebral Palsy, or Leprosy), and homeless or destitute women. Exclusions apply to households already receiving equal or higher benefits from similar state schemes, income-tax-paying households, and families with government employees.",
+    "required_documents": "Aadhaar cards of applicant and household members, Aadhaar-linked NFSA ration card, bank passbook details, proof of residence (voter ID or domicile certificate), and income certificate.",
+    "application_steps": "Applications are conducted OFFLINE ONLY — no online application portal exists. Applicants visit their local Gaon Panchayat office (in rural areas) or Urban Local Body / Ward office (in urban areas), collect the Detailed Application Form, nominate one adult female member, fill in details with assistance from Orunodoi Sahayaks if needed, and submit the form with documents for field verification.",
+    "estimated_timeline": "No online tracking exists; enrollment runs in periodic government cycles. Once approved and sanctioned, monthly financial assistance is credited on the 10th of every month."
+  },
+  {
+    "scheme_id": "mission_basundhara_assam",
+    "name": "Mission Basundhara",
+    "category": "Land / Property / Revenue Service",
+    "states_applicable": "Assam",
+    "eligibility_summary": "A flagship land governance initiative by the Government of Assam providing land ownership rights, land pattas, and streamlined land revenue services to eligible landless indigenous families residing on government land.",
+    "required_documents": "Land possession proof, identity proof, residence certificate, and supporting revenue documentation. Exact requirements vary by specific land service variant.",
+    "application_steps": "Apply online through the official Assam land portal at land.assam.gov.in or Sewa Setu portal, or apply offline at the local Revenue Circle Office.",
+    "estimated_timeline": "No fixed statutory timeline is published in the supplied source; processing time depends on field verification by Lat Mandals and Revenue Circle Officers."
+  },
+  {
+    "scheme_id": "mgnrega_meghalaya",
+    "name": "MGNREGA (Meghalaya)",
+    "category": "Employment / Rural Livelihood",
+    "states_applicable": "Meghalaya",
+    "eligibility_summary": "Provides a statutory guarantee of 100 days of wage employment per financial year to every rural household in Meghalaya whose adult members volunteer to do unskilled manual work.",
+    "required_documents": "Aadhaar card, residence proof, passport-size photographs, and bank or post office account details for wage payments.",
+    "application_steps": "Submit a job card application at the local Gram Panchayat or Block Development Office. Under the Act, a Job Card must be issued within 15 days of application, and employment is to be provided within 15 days of submitting a written demand for work.",
+    "estimated_timeline": "Statutory timelines specify job card issuance within 15 days of application and work provision within 15 days of demand; actual administrative scheduling may vary."
+  },
+  {
+    "scheme_id": "meghalaya_state_pension",
+    "name": "Meghalaya State Old-Age / Widow / Disability Pension",
+    "category": "Social Welfare / Pension",
+    "states_applicable": "Meghalaya",
+    "eligibility_summary": "Provides monthly pension assistance to elderly citizens, BPL widows, and severely disabled persons in Meghalaya through state social welfare schemes converged with the National Social Assistance Programme (NSAP).",
+    "required_documents": "Aadhaar card, BPL certificate or proof of income, age proof, disability certificate from a recognized medical board (where applicable), and bank passbook details.",
+    "application_steps": "Submit the pension application form offline at the District Social Welfare Office or Block Development Office along with supporting documents for local verification and sanction.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; sanctioning depends on district committee verification and state fund allocations."
+  },
+  {
+    "scheme_id": "mission_vatsalya_manipur",
+    "name": "Mission Vatsalya",
+    "category": "Child Protection / Social Welfare",
+    "states_applicable": "Manipur",
+    "eligibility_summary": "Provides family-based non-institutional care and financial sponsorship support for vulnerable, orphaned, destitute, or at-risk children in Manipur to ensure their education, health, and social protection.",
+    "required_documents": "Child's birth certificate or age proof, guardian's Aadhaar card, household income certificate, and completed sponsorship application form.",
+    "application_steps": "Apply through the District Child Protection Unit (DCPU) or local Social Welfare Department office in Manipur by submitting the prescribed application and supporting family records.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; approvals depend on Child Welfare Committee (CWC) assessment and district sponsorship approval."
+  },
+  {
+    "scheme_id": "state_hub_empowerment_women_manipur",
+    "name": "State Hub / District Hub for Empowerment of Women",
+    "category": "Women / Livelihood / Skilling",
+    "states_applicable": "Manipur",
+    "eligibility_summary": "Provides single-window convergence, skill training, financial literacy, and livelihood facilitation support for women in Manipur under the Ministry of Women and Child Development framework.",
+    "required_documents": "Identity proof (Aadhaar card), residence proof, and relevant training/livelihood application forms.",
+    "application_steps": "Visit the District Hub for Empowerment of Women (DHEW) located at the District Social Welfare Office in Manipur to access scheme guidance, skill registration, and convergent welfare support.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; services and training schedules depend on district hub operational cycles."
+  },
+  {
+    "scheme_id": "pmay_gramin_idp_rehabilitation_manipur",
+    "name": "PMAY-Gramin Rehabilitation Housing Support for Internally Displaced Persons",
+    "category": "Housing / Rehabilitation",
+    "states_applicable": "Manipur",
+    "eligibility_summary": "Provides special housing allocation and construction assistance under PMAY-Gramin for internally displaced persons (IDPs) residing in relief camps or displaced due to ongoing conflict in Manipur.",
+    "required_documents": "IDP registration/relief camp identification proof, Aadhaar card, and land/rehabilitation site details.",
+    "application_steps": "Submit applications through the local district administration, relief camp coordination office, or district housing nodal officers in Manipur.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; housing sanctioning depends on government relief and rehabilitation clearance cycles."
+  },
+  {
+    "scheme_id": "nagaland_state_pension",
+    "name": "Nagaland Old-Age / Widow / Disability Pension",
+    "category": "Social Welfare / Pension",
+    "states_applicable": "Nagaland",
+    "eligibility_summary": "Provides monthly welfare pension support to senior citizens, widows, and persons with disabilities in Nagaland under state social welfare programs implemented in alignment with the NSAP framework.",
+    "required_documents": "Age proof, BPL proof or Village Council certificate, disability certificate (where applicable), Aadhaar card, and bank passbook details.",
+    "application_steps": "Submit paper application forms at the District Social Welfare Office or through the Village Council / Block Office. Information can be accessed at dsw.nagaland.gov.in.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; applications undergo offline verification by district authorities."
+  },
+  {
+    "scheme_id": "mizoram_state_pension",
+    "name": "Mizoram State Welfare Pension Schemes",
+    "category": "Social Welfare / Pension",
+    "states_applicable": "Mizoram",
+    "eligibility_summary": "Provides social security pensions to eligible senior citizens, BPL widows, and severely disabled individuals in Mizoram following National Social Assistance Programme (NSAP) guidelines.",
+    "required_documents": "Aadhaar card, BPL identification/income proof, age certificate, disability medical certificate (where applicable), and bank passbook details.",
+    "application_steps": "Apply offline at the district office of the Social Welfare Department, Mizoram, submitting completed forms with required supporting documents.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; approvals depend on district verification and quota availability."
+  },
+  {
+    "scheme_id": "tripura_fisheries_livelihood_support",
+    "name": "Tripura Fisheries Livelihood Support",
+    "category": "Agriculture / Fisheries / Livelihood",
+    "states_applicable": "Tripura",
+    "eligibility_summary": "Provides financial, input, and infrastructure support to active fishermen, fish farmers, and fisheries cooperative societies in Tripura under state Fisheries Department initiatives.",
+    "required_documents": "Fisherman identity card / cooperative membership proof, Aadhaar card, bank passbook, and land/waterbody possession documents.",
+    "application_steps": "Apply through the local Fishery Officer or District Fisheries Office in Tripura, or submit proposals through recognized fisheries cooperatives.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; support distribution follows departmental scheme implementation schedules."
+  },
+  {
+    "scheme_id": "tripura_sc_st_scholarships",
+    "name": "Tripura SC/ST Scholarships",
+    "category": "Education / Financial Assistance",
+    "states_applicable": "Tripura",
+    "eligibility_summary": "Provides educational financial assistance and stipends to Scheduled Caste (SC) and Scheduled Tribe (ST) students in Tripura pursuing post-matric and higher education courses.",
+    "required_documents": "Valid SC or ST caste certificate, BPL card or family income certificate, Aadhaar card, mark sheets of qualifying exams, and bank passbook.",
+    "application_steps": "Apply online through the National Scholarship Portal (NSP) or through the Welfare of SC/ST Department / District Social Welfare office in Tripura.",
+    "estimated_timeline": "No fixed timeline is specified in the supplied source; disbursals follow academic session verification and NSP portal processing cycles."
+  },
+  {
+    "scheme_id": "tripura_state_pension",
+    "name": "Tripura State Pension Schemes",
+    "category": "Social Welfare / Pension",
+    "states_applicable": "Tripura",
+    "eligibility_summary": "Provides monthly financial pensions to eligible senior citizens, BPL widows, and disabled residents in Tripura administered through the Department of Welfare for SC/ST/OBC and Social Welfare.",
+    "required_documents": "Aadhaar card, BPL certificate or caste/income certificate where applicable, age proof, disability certificate (where relevant), and bank passbook.",
+    "application_steps": "Submit application forms at the District Social Welfare Office or Block Development Office in Tripura.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; approval depends on local authority verification."
+  },
+  {
+    "scheme_id": "arunachal_pradesh_welfare_pension",
+    "name": "Arunachal Pradesh Chief Minister's Welfare / Pension Schemes",
+    "category": "Social Welfare / Pension",
+    "states_applicable": "Arunachal Pradesh",
+    "eligibility_summary": "Provides social security pensions and financial assistance to destitute senior citizens, widows, and disabled residents in Arunachal Pradesh under Chief Minister's welfare initiatives.",
+    "required_documents": "Aadhaar card, Scheduled Tribe (APST) certificate or residence proof, age proof, income/indigent certificate, and bank passbook details.",
+    "application_steps": "Apply offline through the District Social Welfare Office or Deputy Commissioner's office in Arunachal Pradesh.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; sanctioning follows district verification cycles."
+  },
+  {
+    "scheme_id": "arunachal_pradesh_tribal_student_scholarships",
+    "name": "Arunachal Pradesh Tribal Student Scholarships",
+    "category": "Education / Financial Assistance",
+    "states_applicable": "Arunachal Pradesh",
+    "eligibility_summary": "Provides stipend and scholarship assistance to Arunachal Pradesh Scheduled Tribe (APST) students pursuing post-secondary and professional education.",
+    "required_documents": "APST certificate, mark sheets of qualifying examinations, Aadhaar card, institution bonafide certificate, and bank account details.",
+    "application_steps": "Apply online through the National Scholarship Portal (NSP) or submit applications via the Directorate of Higher & Technical Education, Arunachal Pradesh.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; disbursal depends on institutional and department verification."
+  },
+  {
+    "scheme_id": "arunachal_pradesh_agriculture_horticulture_livelihood",
+    "name": "Arunachal Pradesh Agriculture / Horticulture Livelihood Schemes",
+    "category": "Agriculture / Livelihood",
+    "states_applicable": "Arunachal Pradesh",
+    "eligibility_summary": "Provides farm machinery subsidies, planting material, and credit-linked livelihood incentives to farmers and horticulturists under state agriculture and horticulture flagship programs in Arunachal Pradesh.",
+    "required_documents": "APST certificate or land possession certificate, Aadhaar card, bank passbook, and farm registration details.",
+    "application_steps": "Submit application forms at the District Agriculture Office (DAO) or District Horticulture Office (DHO) in Arunachal Pradesh.",
+    "estimated_timeline": "No fixed statutory processing timeline is specified in the supplied source; distribution depends on district department targets."
+  },
+  {
+    "scheme_id": "catch_sikkim",
+    "name": "CM's Comprehensive Annual and Total Health Insurance Scheme (CATCH)",
+    "category": "Health / Health Insurance",
+    "states_applicable": "Sikkim",
+    "eligibility_summary": "Provides comprehensive state health insurance and medical care coverage to all permanent residents of Sikkim, offering broader population coverage than BPL-only central schemes.",
+    "required_documents": "Sikkim Subject Certificate / Certificate of Identification (COI), Aadhaar card, and family composition record.",
+    "application_steps": "Apply through designated district hospitals or the Health & Family Welfare Department, Government of Sikkim, to obtain CATCH health card enrollment.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; card issuance depends on district health office enrollment drives."
+  },
+  {
+    "scheme_id": "sikkim_old_age_pension",
+    "name": "Sikkim Old-Age Pension",
+    "category": "Social Welfare / Pension",
+    "states_applicable": "Sikkim",
+    "eligibility_summary": "Provides monthly social security pensions to senior citizens aged 60+ belonging to economically vulnerable households in Sikkim.",
+    "required_documents": "Sikkim Subject Certificate / COI, age proof, income/BPL proof, Aadhaar card, and bank passbook.",
+    "application_steps": "Apply offline at the Social Justice & Welfare Department district office or Gram Panchayat unit in Sikkim.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; sanctioning follows department committee review."
+  },
+  {
+    "scheme_id": "sikkim_organic_farming_incentives",
+    "name": "Sikkim Organic-Farming Livelihood Incentives",
+    "category": "Agriculture / Livelihood",
+    "states_applicable": "Sikkim",
+    "eligibility_summary": "Provides technical, financial, and marketing incentives to organic farmers and bio-input producers in Sikkim, supporting India's first 100% organic state agriculture model.",
+    "required_documents": "Land holding proof / Sikkim Subject Certificate, organic farmer registration card, Aadhaar card, and bank passbook.",
+    "application_steps": "Apply through the Agriculture & Horticulture Department offices or local Farmers' Producer Organizations (FPOs) in Sikkim.",
+    "estimated_timeline": "No fixed processing timeline is specified in the supplied source; incentives follow departmental seasonal crop cycles."
   }
 ]
